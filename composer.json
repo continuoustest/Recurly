@@ -1,0 +1,27 @@
+{
+    "name": "neeckeloo/recurly",
+    "description": "ZF2 module for using Recurly plateform",
+    "type": "library",
+    "keywords": [
+        "zf2", "recurly"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/neeckeloo/Recurly",
+    "authors": [
+        {
+            "name": "Nicolas Eeckeloo",
+            "email": "neeckeloo@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "Recurly": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
+    }
+}
