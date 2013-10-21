@@ -1,14 +1,14 @@
 Recurly module for ZF2
 ======================
 
-Recurly module provide a small wrapper to the Recurly client library that interact with Recurly's subscription management through [REST API](http://support.recurly.com/faqs/api).
+Recurly module provide a small wrapper to the Recurly client library that interact with Recurly's subscription management through [REST API](http://docs.recurly.com/api).
 
 [![Dependencies Status](https://d2xishtp1ojlk0.cloudfront.net/d/11902444)](http://depending.in/neeckeloo/Recurly)
 
 Introduction
 ------------
 
-NewRelic module provide a config file to initialize simply [REST API](http://support.recurly.com/faqs/api) client.
+NewRelic module provide a config file to initialize simply [REST API](http://docs.recurly.com/api) client.
 
 Installation
 ------------
