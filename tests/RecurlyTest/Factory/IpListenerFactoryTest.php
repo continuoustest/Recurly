@@ -22,7 +22,9 @@ class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager->setService('Config', array(
             'recurly' => array(
                 'notification' => array(
-                    'ip_addresses' => array(),
+                    'ip_checking' => array(
+                        'white_list' => array(),
+                    ),
                 ),
             ),
         ));
