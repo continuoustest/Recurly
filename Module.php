@@ -30,11 +30,17 @@ class Module
 
         $target = $e->getTarget();
 
-        $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
-        $target->getEventManager()->attach($ipListener);
+        $notificationConfig = $config['recurly']['notification'];
 
-        $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
-        $target->getEventManager()->attach($authenticationListener);
+        if ($notificationConfig['ip_checking']['enable']) {
+            $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
+            $target->getEventManager()->attach($ipListener);
+        }
+
+        if ($notificationConfig['authentication']['enable']) {
+            $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
+            $target->getEventManager()->attach($authenticationListener);
+        }
 
         $errorListener = $target->getServiceManager()->get('Recurly\Listener\ErrorListener');
         $target->getEventManager()->attach($errorListener);

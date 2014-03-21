@@ -15,6 +15,6 @@ class IpListenerFactory implements FactoryInterface
     {
         $config = $serviceLocator->get('Config');
 
-        return new IpListener($config['recurly']['notification']['ip_addresses']);
+        return new IpListener($config['recurly']['notification']['ip_checking']['white_list']);
     }
 }
