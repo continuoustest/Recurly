@@ -2,6 +2,7 @@
 namespace RecurlyTest\Controller;
 
 use Recurly\Controller\NotificationController;
+use Zend\Http\Response as HttpResponse;
 
 class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +47,7 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->controller->indexAction();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(HttpResponse::STATUS_CODE_200, $response->getStatusCode());
     }
 
     public function testIndexActionWithEmptyRequestContent()
@@ -57,6 +58,6 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->controller->indexAction();
 
-        $this->assertEquals(202, $response->getStatusCode());
+        $this->assertEquals(HttpResponse::STATUS_CODE_202, $response->getStatusCode());
     }
 }

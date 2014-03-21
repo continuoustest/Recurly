@@ -7,6 +7,15 @@ return array(
                 '75.98.92.102', '75.98.92.103', '75.98.92.104', '75.98.92.105', '75.98.92.106', '75.98.92.107',
                 '75.98.92.108', '75.98.92.109', '75.98.92.110', '75.98.92.111',
             ),
+            'auth_adapter' => array(
+                'config' => array(
+                    'accept_schemes' => 'basic',
+                    'realm'          => 'MyApp Site',
+                    'digest_domains' => '/recurly/notification',
+                    'nonce_timeout'  => 3600,
+                ),
+                'passwd_file'  => __DIR__ . '/../config/passwd.txt',
+            ),
         ),
     ),
 
@@ -22,7 +31,9 @@ return array(
             'Recurly\Receiver'               => 'Recurly\Receiver',
         ),
         'factories' => array(
-            'Recurly\Listener\IpListener' => 'Recurly\Factory\IpListenerFactory',
+            'Recurly\AuthenticationAdapter'           => 'Recurly\Factory\AuthenticationAdapterFactory',
+            'Recurly\Listener\AuthenticationListener' => 'Recurly\Factory\AuthenticationListenerFactory',
+            'Recurly\Listener\IpListener'             => 'Recurly\Factory\IpListenerFactory',
         ),
     ),
 

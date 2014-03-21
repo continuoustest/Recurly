@@ -31,7 +31,7 @@ class ErrorListener extends AbstractListenerAggregate
         }
 
         $response = $event->getResponse() ?: new HttpResponse();
-        $response->setStatusCode(403);
+        $response->setStatusCode(HttpResponse::STATUS_CODE_403);
 
         $event->setResponse($response);
     }

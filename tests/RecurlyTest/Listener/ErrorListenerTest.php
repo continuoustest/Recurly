@@ -31,7 +31,7 @@ class ErrorListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new ErrorListener();
         $listener->onError($event);
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(HttpResponse::STATUS_CODE_403, $response->getStatusCode());
     }
 
     public function testFillEventWithoutException()
@@ -44,6 +44,6 @@ class ErrorListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new ErrorListener();
         $listener->onError($event);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(HttpResponse::STATUS_CODE_200, $response->getStatusCode());
     }
 }

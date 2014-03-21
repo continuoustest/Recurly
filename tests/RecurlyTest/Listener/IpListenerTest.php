@@ -32,11 +32,11 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider ipDataProvider
      */
-    public function testIpGranted(array $ipAddresses, $clientIp, $isGranted)
+    public function testIsGranted(array $ipAddresses, $clientIp, $isGranted)
     {
         $_SERVER['REMOTE_ADDR'] = $clientIp;
 
-        $event   = new MvcEvent();
+        $event = new MvcEvent();
         
         $routeMatch = new RouteMatch(array());
         $routeMatch->setMatchedRouteName('recurly/notification');

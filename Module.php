@@ -33,6 +33,9 @@ class Module
         $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
         $target->getEventManager()->attach($ipListener);
 
+        $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
+        $target->getEventManager()->attach($authenticationListener);
+
         $errorListener = $target->getServiceManager()->get('Recurly\Listener\ErrorListener');
         $target->getEventManager()->attach($errorListener);
     }
