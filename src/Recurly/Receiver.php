@@ -1,6 +1,7 @@
 <?php
 namespace Recurly;
 
+use Recurly_PushNotification;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -20,6 +21,11 @@ class Receiver implements EventManagerAwareInterface
     const EVENT_FAILED_PAYMENT = 'failed_payment_notification';
     const EVENT_SUCCESSFUL_REFUND = 'successful_refund_notification';
     const EVENT_VOID_PAYMENT = 'void_payment_notification';
+
+    /**
+     * @var EventManagerInterface 
+     */
+    protected $eventManager;
 
     /**
      * @param  EventManagerInterface $eventManager
@@ -48,7 +54,7 @@ class Receiver implements EventManagerAwareInterface
      */
     public function receive($data)
     {
-        $notification = new RecurlyPushNotification($data);
+        $notification = new Recurly_PushNotification($data);
 
         $params = array('account' => $notification->account);
         if (!empty($notification->subscription)) {

@@ -25,13 +25,14 @@ class ErrorListener extends AbstractListenerAggregate
     {
         // Do nothing if no error or if response is not HTTP response
         if (!($exception = $event->getParam('exception') instanceof UnauthorizedExceptionInterface)
-            || ($result = $event->getResult() instanceof HttpResponse)
             || !($response = $event->getResponse() instanceof HttpResponse)
         ) {
             return;
         }
 
-        $response->setStatusCode(401);
-        $result->setResult($response);
+        $response = $event->getResponse() ?: new HttpResponse();
+        $response->setStatusCode(403);
+
+        $event->setResponse($response);
     }
 }

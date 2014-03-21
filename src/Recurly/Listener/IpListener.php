@@ -98,6 +98,6 @@ class IpListener
             $clientIp = $_SERVER['REMOTE_ADDR'];
         }
 
-        return !in_array($clientIp, $this->ipAddresses);
+        return in_array($clientIp, $this->ipAddresses);
     }
 }
