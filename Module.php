@@ -27,6 +27,14 @@ class Module
         if (isset($options['private_key'])) {
             Recurly_js::$privateKey = $options['private_key'];
         }
+
+        $target = $e->getTarget();
+
+        $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
+        $target->getEventManager()->attach($ipListener);
+
+        $errorListener = $target->getServiceManager()->get('Recurly\Listener\ErrorListener');
+        $target->getEventManager()->attach($errorListener);
     }
 
     public function getConfig()
