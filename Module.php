@@ -29,21 +29,24 @@ class Module
         }
 
         $target = $e->getTarget();
+        
+        /* @var $eventManager  \Zend\EventManager\EventManager */
+        $eventManager = $target->getEventManager();
 
         $notificationConfig = $config['recurly']['notification'];
 
         if ($notificationConfig['ip_checking']['enable']) {
             $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
-            $target->getEventManager()->attach($ipListener);
+            $eventManager->attach($ipListener);
         }
 
         if ($notificationConfig['authentication']['enable']) {
             $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
-            $target->getEventManager()->attach($authenticationListener);
+            $eventManager->attach($authenticationListener);
         }
 
         $errorListener = $target->getServiceManager()->get('Recurly\Listener\ErrorListener');
-        $target->getEventManager()->attach($errorListener);
+        $eventManager->attach($errorListener);
     }
 
     public function getConfig()

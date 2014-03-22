@@ -24,7 +24,7 @@ class IpListener extends AbstractAuthorizationListener
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onResult'), 101);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onResult'), -99);
     }
 
     /**

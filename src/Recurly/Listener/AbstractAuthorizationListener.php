@@ -3,11 +3,12 @@ namespace Recurly\Listener;
 
 use Recurly\Exception;
 use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
-abstract class AbstractAuthorizationListener
+abstract class AbstractAuthorizationListener implements ListenerAggregateInterface
 {
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -38,7 +39,7 @@ abstract class AbstractAuthorizationListener
             return;
         }
 
-        $routeMatch = $event->getRouteMatch();
+        $routeMatch = $event->getRouteMatch();        
         $matchedRouteName = $routeMatch->getMatchedRouteName();
         if ($matchedRouteName != 'recurly/notification') {
             return;
