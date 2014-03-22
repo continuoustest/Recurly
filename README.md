@@ -5,6 +5,7 @@ Recurly module provide a small wrapper to the Recurly client library that intera
 
 [![Build Status](https://secure.travis-ci.org/neeckeloo/Recurly.png?branch=master)](http://travis-ci.org/neeckeloo/Recurly)
 [![Latest Stable Version](https://poser.pugx.org/neeckeloo/Recurly/v/stable.png)](https://packagist.org/packages/neeckeloo/Recurly)
+[![Coverage Status](https://coveralls.io/repos/neeckeloo/Recurly/badge.png)](https://coveralls.io/r/neeckeloo/Recurly)
 [![Dependencies Status](https://depending.in/neeckeloo/Recurly.png)](http://depending.in/neeckeloo/Recurly)
 
 Introduction
