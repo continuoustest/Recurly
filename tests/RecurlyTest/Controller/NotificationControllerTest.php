@@ -12,24 +12,24 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
     protected $controller;
 
     /**
-     * @var \Recurly\Receiver
+     * @var \Recurly\Notification\Handler
      */
-    protected $receiver;
+    protected $handler;
 
     public function setUp()
     {
         $this->controller = new NotificationController();
 
-        $this->receiver = $this->getMockBuilder('Recurly\Receiver')
+        $this->handler = $this->getMockBuilder('Recurly\Notification\Handler')
             ->getMock();
-        $this->controller->setReceiver($this->receiver);
+        $this->controller->setNotificationHandler($this->handler);
     }
 
     public function testIndexActionWithRequestContent()
     {
-        $this->receiver
+        $this->handler
             ->expects($this->once())
-            ->method('receive');
+            ->method('handle');
 
         $xml = '<new_account_notification>
             <account>
@@ -52,9 +52,9 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testIndexActionWithEmptyRequestContent()
     {
-        $this->receiver
+        $this->handler
             ->expects($this->never())
-            ->method('receive');
+            ->method('handle');
 
         $response = $this->controller->indexAction();
 

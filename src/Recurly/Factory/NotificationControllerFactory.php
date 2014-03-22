@@ -15,8 +15,8 @@ class NotificationControllerFactory implements FactoryInterface
     {
         $controller = new NotificationController();
 
-        $receiver = $serviceLocator->getServiceLocator()->get('Recurly\Receiver');
-        $controller->setReceiver($receiver);
+        $handler = $serviceLocator->getServiceLocator()->get('Recurly\Notification\Handler');
+        $controller->setNotificationHandler($handler);
 
         return $controller;
     }

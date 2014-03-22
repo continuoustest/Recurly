@@ -1,30 +1,30 @@
 <?php
-namespace RecurlyTest;
+namespace RecurlyTest\Notification;
 
-use Recurly\Receiver;
+use Recurly\Notification\Handler as NotificationHandler;
 use Zend\EventManager\EventManager;
 
-class ReceiverTest extends \PHPUnit_Framework_TestCase
+class HandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Receiver 
+     * @var NotificationHandler 
      */
-    protected $receiver;
+    protected $handler;
 
     public function setUp()
     {
-        $this->receiver = new Receiver();
+        $this->handler = new NotificationHandler();
     }
 
     public function testSetGetEventManager()
     {
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->receiver->getEventManager());
+        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->handler->getEventManager());
 
-        $this->receiver->setEventManager(new EventManager());
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->receiver->getEventManager());
+        $this->handler->setEventManager(new EventManager());
+        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->handler->getEventManager());
     }
 
-    public function testReceive()
+    public function testNotificationHandler()
     {
         $xml = '<new_account_notification>
             <account>
@@ -45,7 +45,7 @@ class ReceiverTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('trigger');
 
-        $this->receiver->setEventManager($eventManager);
-        $this->receiver->receive($xml);
+        $this->handler->setEventManager($eventManager);
+        $this->handler->handle($xml);
     }
 }

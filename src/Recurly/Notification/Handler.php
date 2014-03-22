@@ -1,12 +1,12 @@
 <?php
-namespace Recurly;
+namespace Recurly\Notification;
 
 use Recurly_PushNotification;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
-class Receiver implements EventManagerAwareInterface
+class Handler implements EventManagerAwareInterface
 {
     const EVENT_NEW_ACCOUNT = 'new_account_notification';
     const EVENT_CANCELED_ACCOUNT = 'canceled_account_notification';
@@ -52,7 +52,7 @@ class Receiver implements EventManagerAwareInterface
      * @param  string $data
      * @return void
      */
-    public function receive($data)
+    public function handle($data)
     {
         $notification = new Recurly_PushNotification($data);
 

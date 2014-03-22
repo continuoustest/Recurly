@@ -1,22 +1,22 @@
 <?php
 namespace Recurly\Controller;
 
-use Recurly\Receiver;
+use Recurly\Notification\Handler as NotificationHandler;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class NotificationController extends AbstractActionController
 {
     /**
-     * @var Receiver
+     * @var NotificationHandler
      */
-    protected $receiver;
+    protected $notificationHandler;
 
     /**
-     * @param Receiver $receiver
+     * @param NotificationHandler $handler
      */
-    public function setReceiver(Receiver $receiver)
+    public function setNotificationHandler(NotificationHandler $handler)
     {
-        $this->receiver = $receiver;
+        $this->notificationHandler = $handler;
     }
 
     public function indexAction()
@@ -30,7 +30,7 @@ class NotificationController extends AbstractActionController
             return $response;
         }
 
-        $this->receiver->receive($xml);
+        $this->notificationHandler->handle($xml);
 
         $response->setStatusCode(200);
 

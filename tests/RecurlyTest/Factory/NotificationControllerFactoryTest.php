@@ -2,7 +2,7 @@
 namespace RecurlyTest\Factory;
 
 use Recurly\Factory\NotificationControllerFactory;
-use Recurly\Receiver;
+use Recurly\Notification\Handler as NotificationHandler;
 use Zend\ServiceManager\ServiceManager;
 
 class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
@@ -24,7 +24,7 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         
         $serviceManager = new ServiceManager();
-        $serviceManager->setService('Recurly\Receiver', new Receiver());
+        $serviceManager->setService('Recurly\Notification\Handler', new NotificationHandler());
 
         $serviceLocator
             ->expects($this->once())

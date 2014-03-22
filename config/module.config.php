@@ -34,7 +34,7 @@ return array(
     'service_manager' => array(
         'invokables' => array(
             'Recurly\Listener\ErrorListener' => 'Recurly\Listener\ErrorListener',
-            'Recurly\Receiver'               => 'Recurly\Receiver',
+            'Recurly\Notification\Handler'   => 'Recurly\Notification\Handler',
         ),
         'factories' => array(
             'Recurly\AuthenticationAdapter'           => 'Recurly\Factory\AuthenticationAdapterFactory',
