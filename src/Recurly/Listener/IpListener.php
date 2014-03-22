@@ -2,6 +2,7 @@
 namespace Recurly\Listener;
 
 use Zend\EventManager\EventManagerInterface;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
 class IpListener extends AbstractAuthorizationListener
@@ -25,6 +26,18 @@ class IpListener extends AbstractAuthorizationListener
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onResult'), -99);
+    }
+
+    /**
+     * @param  MvcEvent $event
+     * @return void
+     */
+    public function onResult(MvcEvent $event)
+    {
+        parent::onResult($event);
+
+        $response = $event->getResponse();
+        $response->setStatusCode(HttpResponse::STATUS_CODE_403);
     }
 
     /**

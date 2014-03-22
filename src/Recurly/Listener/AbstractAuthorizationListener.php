@@ -5,7 +5,6 @@ use Recurly\Exception;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Http\Request as HttpRequest;
-use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
 abstract class AbstractAuthorizationListener implements ListenerAggregateInterface
@@ -60,10 +59,5 @@ abstract class AbstractAuthorizationListener implements ListenerAggregateInterfa
         $eventManager = $application->getEventManager();
 
         $eventManager->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
-
-        $response = $event->getResponse();
-        $response->setStatusCode(HttpResponse::STATUS_CODE_401);
-
-        return $response;
     }
 }

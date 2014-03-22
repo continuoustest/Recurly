@@ -3,6 +3,7 @@ namespace Recurly\Listener;
 
 use Zend\Authentication\Adapter\Http as HttpAdapter;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
 class AuthenticationListener
@@ -26,6 +27,18 @@ class AuthenticationListener
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onResult'), -100);
+    }
+
+    /**
+     * @param  MvcEvent $event
+     * @return void
+     */
+    public function onResult(MvcEvent $event)
+    {
+        parent::onResult($event);
+
+        $response = $event->getResponse();
+        $response->setStatusCode(HttpResponse::STATUS_CODE_401);
     }
 
     /**
