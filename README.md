@@ -3,7 +3,7 @@ Recurly module for ZF2
 
 Recurly module provide a small wrapper to the Recurly client library that interact with Recurly's subscription management through [REST API](http://docs.recurly.com/api).
 
-[![Dependencies Status](http://depending.in/neeckeloo/Recurly.png)](http://depending.in/neeckeloo/Recurly)
+[![Dependencies Status](https://depending.in/neeckeloo/Recurly.png)](http://depending.in/neeckeloo/Recurly)
 
 Introduction
 ------------
