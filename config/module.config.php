@@ -47,6 +47,7 @@ return array(
         'routes' => array(
             'recurly' => array(
                 'type'    => 'Literal',
+                'priority' => 1000,
                 'options' => array(
                     'route'    => '/recurly',
                     'defaults' => array(
@@ -66,7 +67,7 @@ return array(
                         'options' => array(
                             'route'    => '/notification',
                             'defaults' => array(
-                                'controller' => 'Notification',
+                                'controller' => 'notification',
                             ),
                         ),
                     ),
