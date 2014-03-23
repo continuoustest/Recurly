@@ -45,7 +45,7 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $request = $this->controller->getRequest();
         $request->setContent('$xml');
 
-        $response = $this->controller->indexAction();
+        $response = $this->controller->pushAction();
 
         $this->assertEquals(HttpResponse::STATUS_CODE_200, $response->getStatusCode());
     }
@@ -56,7 +56,7 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handle');
 
-        $response = $this->controller->indexAction();
+        $response = $this->controller->pushAction();
 
         $this->assertEquals(HttpResponse::STATUS_CODE_202, $response->getStatusCode());
     }
