@@ -16,7 +16,7 @@ class AuthenticationAdapterFactory implements FactoryInterface
     {
         $config         = $serviceLocator->get('Config');
         $authConfig     = $config['recurly']['notification']['authentication']['auth_adapter'];
-        $authAdapter    = new HttpAdapter($authConfig);
+        $authAdapter    = new HttpAdapter($authConfig['config']);
         
         $basicResolver  = new FileResolver();
         $basicResolver->setFile($authConfig['passwd_file']);
