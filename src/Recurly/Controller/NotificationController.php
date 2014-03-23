@@ -19,7 +19,7 @@ class NotificationController extends AbstractActionController
         $this->notificationHandler = $handler;
     }
 
-    public function indexAction()
+    public function pushAction()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();

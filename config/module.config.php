@@ -65,9 +65,10 @@ return array(
                     'notification' => array(
                         'type'    => 'Literal',
                         'options' => array(
-                            'route'    => '/notification',
+                            'route'    => '/push',
                             'defaults' => array(
                                 'controller' => 'notification',
+                                'action'     => 'push',
                             ),
                         ),
                     ),
