@@ -19,6 +19,11 @@ abstract class AbstractAuthorizationListener implements ListenerAggregateInterfa
      * Logger
      */
     protected $logger;
+
+    /**
+     * @var bool
+     */
+    protected $isGranted;
     
     /**
      * @param  Logger $logger

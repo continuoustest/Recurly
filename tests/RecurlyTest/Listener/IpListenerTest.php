@@ -81,7 +81,9 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $response   = new HttpResponse();
         $routeMatch = new RouteMatch(array());
 
-        $application  = $this->getMock('Zend\Mvc\Application', array(), array(), '', false);
+        $application  = $this->getMockBuilder('Zend\Mvc\Application')
+            ->disableOriginalConstructor()
+            ->getMock();
         $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
 
         $application
@@ -101,5 +103,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($event->getError());
         $this->assertNotNull($event->getParam('exception'));
+
+        $this->assertEquals(HttpResponse::STATUS_CODE_403, $response->getStatusCode());
     }
 }

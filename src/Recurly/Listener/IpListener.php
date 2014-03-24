@@ -48,12 +48,15 @@ class IpListener extends AbstractAuthorizationListener
      */
     public function isGranted(MvcEvent $event)
     {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $clientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $clientIp = $_SERVER['REMOTE_ADDR'];
+        if (!isset($this->isGranted)) {
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $clientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } else {
+                $clientIp = $_SERVER['REMOTE_ADDR'];
+            }
+            $this->isGranted = in_array($clientIp, $this->ipAddresses);
         }
 
-        return in_array($clientIp, $this->ipAddresses);
+        return $this->isGranted;
     }
 }

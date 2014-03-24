@@ -49,8 +49,11 @@ class AuthenticationListener extends AbstractAuthorizationListener
      */
     public function isGranted(MvcEvent $event)
     {
-        $result = $this->authAdapter->authenticate();
+        if (!isset($this->isGranted)) {
+            $result = $this->authAdapter->authenticate();
+            $this->isGranted = $result->isValid();
+        }
 
-        return $result->isValid();
+        return $this->isGranted;
     }
 }
