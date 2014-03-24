@@ -21,9 +21,15 @@ class AuthenticationListenerFactoryTest extends \PHPUnit_Framework_TestCase
         $authAdapter = $this->getMockBuilder('Zend\Authentication\Adapter\Http')
             ->disableOriginalConstructor()
             ->getMock();
+        
+        $logger = $this->getMockBuilder('Zend\Log\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $serviceManager = new ServiceManager();
-        $serviceManager->setService('Recurly\AuthenticationAdapter', $authAdapter);
+        $serviceManager
+            ->setService('Recurly\AuthenticationAdapter', $authAdapter)
+            ->setService('Recurly\Logger', $logger);
 
         $listener = $this->factory->createService($serviceManager);
         $this->assertInstanceOf('Recurly\Listener\AuthenticationListener', $listener);

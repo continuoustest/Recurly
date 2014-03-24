@@ -36,8 +36,10 @@ class IpListener extends AbstractAuthorizationListener
     {
         parent::onResult($event);
 
-        $response = $event->getResponse();
-        $response->setStatusCode(HttpResponse::STATUS_CODE_403);
+        if (!$this->isGranted($event)) {
+            $response = $event->getResponse();
+            $response->setStatusCode(HttpResponse::STATUS_CODE_403);
+        }
     }
 
     /**

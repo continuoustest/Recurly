@@ -18,16 +18,20 @@ class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateService()
     {
+        $logger = $this->getMockBuilder('Zend\Log\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+        
         $serviceManager = new ServiceManager();
-        $serviceManager->setService('Config', array(
-            'recurly' => array(
+        $serviceManager
+            ->setService('Recurly\ModuleConfig', array(
                 'notification' => array(
                     'ip_checking' => array(
                         'white_list' => array(),
                     ),
                 ),
-            ),
-        ));
+            ))
+            ->setService('Recurly\Logger', $logger);
 
         $listener = $this->factory->createService($serviceManager);
         $this->assertInstanceOf('Recurly\Listener\IpListener', $listener);

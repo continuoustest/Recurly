@@ -14,7 +14,12 @@ class AuthenticationListenerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $authAdapter = $serviceLocator->get('Recurly\AuthenticationAdapter');
-
-        return new AuthenticationListener($authAdapter);
+        
+        $listener = new AuthenticationListener($authAdapter);
+        
+        $logger = $serviceLocator->get('Recurly\Logger');
+        $listener->setLogger($logger);
+        
+        return $listener;
     }
 }

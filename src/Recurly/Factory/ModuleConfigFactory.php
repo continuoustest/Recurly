@@ -1,25 +1,23 @@
 <?php
 namespace Recurly\Factory;
 
-use Recurly\Listener\IpListener;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class IpListenerFactory implements FactoryInterface
-{    
+class ModuleConfigFactory implements FactoryInterface
+{
     /**
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return IpListener
+     * @return array
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Recurly\ModuleConfig');
+
+        if (!isset($config['recurly'])) {
+            throw new RuntimeException('Recurly configuration must be defined. Did you copy the config file?');
+        }
         
-        $listener = new IpListener($config['notification']['ip_checking']['white_list']);
-        
-        $logger = $serviceLocator->get('Recurly\Logger');
-        $listener->setLogger($logger);
-        
-        return $listener;
+        return $config['recurly'];
     }
 }

@@ -1,22 +1,22 @@
 <?php
 namespace Recurly\Listener;
 
-use Zend\Authentication\Adapter\Http as HttpAdapter;
+use Zend\Authentication\Adapter\Http as AuthAdapter;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
-class AuthenticationListener
+class AuthenticationListener extends AbstractAuthorizationListener
 {
     /**
-     * HttpAdapter
+     * AuthAdapter
      */
-    protected $authAdapter = array();
+    protected $authAdapter;
 
     /**
-     * @param HttpAdapter $authAdapter
+     * @param AuthAdapter $authAdapter
      */
-    public function __construct(HttpAdapter $authAdapter)
+    public function __construct(AuthAdapter $authAdapter)
     {
         $this->authAdapter = $authAdapter;
     }
@@ -37,8 +37,10 @@ class AuthenticationListener
     {
         parent::onResult($event);
 
-        $response = $event->getResponse();
-        $response->setStatusCode(HttpResponse::STATUS_CODE_401);
+        if (!$this->isGranted($event)) {
+            $response = $event->getResponse();
+            $response->setStatusCode(HttpResponse::STATUS_CODE_401);
+        }
     }
 
     /**

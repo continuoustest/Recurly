@@ -5,6 +5,7 @@ use Recurly\Exception;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Http\Request as HttpRequest;
+use Zend\Log\Logger;
 use Zend\Mvc\MvcEvent;
 
 abstract class AbstractAuthorizationListener implements ListenerAggregateInterface
@@ -13,6 +14,21 @@ abstract class AbstractAuthorizationListener implements ListenerAggregateInterfa
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
+    
+    /**
+     * Logger
+     */
+    protected $logger;
+    
+    /**
+     * @param  Logger $logger
+     * @return self
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+        return $this;
+    }
     
     /**
      * {@inheritDoc}

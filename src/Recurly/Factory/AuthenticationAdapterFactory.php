@@ -1,7 +1,7 @@
 <?php
 namespace Recurly\Factory;
 
-use Zend\Authentication\Adapter\Http as HttpAdapter;
+use Zend\Authentication\Adapter\Http as AuthAdapter;
 use Zend\Authentication\Adapter\Http\FileResolver;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -10,13 +10,13 @@ class AuthenticationAdapterFactory implements FactoryInterface
 {
     /**
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return HttpAdapter
+     * @return AuthAdapter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config         = $serviceLocator->get('Config');
-        $authConfig     = $config['recurly']['notification']['authentication']['auth_adapter'];
-        $authAdapter    = new HttpAdapter($authConfig['config']);
+        $config         = $serviceLocator->get('Recurly\ModuleConfig');
+        $authConfig     = $config['notification']['authentication']['auth_adapter'];
+        $authAdapter    = new AuthAdapter($authConfig['config']);
         
         $basicResolver  = new FileResolver();
         $basicResolver->setFile($authConfig['passwd_file']);

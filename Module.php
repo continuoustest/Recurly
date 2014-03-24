@@ -10,22 +10,17 @@ class Module
     public function onBootstrap($e)
     {
         $serviceManager = $e->getApplication()->getServiceManager();
-        $config = $serviceManager->get('Config');
-
-        if (empty($config['recurly'])) {
-            return;
-        }
+        $config = $serviceManager->get('Recurly\ModuleConfig');
         
-        $options = $config['recurly'];
-        if (empty($options['subdomain']) || empty($options['api_key'])) {
+        if (empty($config['subdomain']) || empty($config['api_key'])) {
             return;
         }
 
-        Recurly_Client::$subdomain = $options['subdomain'];
-        Recurly_Client::$apiKey = $options['api_key'];
+        Recurly_Client::$subdomain = $config['subdomain'];
+        Recurly_Client::$apiKey = $config['api_key'];
 
-        if (isset($options['private_key'])) {
-            Recurly_js::$privateKey = $options['private_key'];
+        if (isset($config['private_key'])) {
+            Recurly_js::$privateKey = $config['private_key'];
         }
 
         $target = $e->getTarget();
@@ -33,14 +28,14 @@ class Module
         /* @var $eventManager  \Zend\EventManager\EventManager */
         $eventManager = $target->getEventManager();
 
-        $notificationConfig = $config['recurly']['notification'];
+        $notificationConfig = $config['notification'];
 
-        if ($notificationConfig['ip_checking']['enable']) {
+        if ($notificationConfig['ip_checking']['enabled']) {
             $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
             $eventManager->attach($ipListener);
         }
 
-        if ($notificationConfig['authentication']['enable']) {
+        if ($notificationConfig['authentication']['enabled']) {
             $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
             $eventManager->attach($authenticationListener);
         }
