@@ -153,6 +153,17 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($authenticationResult));
 
         $listener = new AuthenticationListener($authAdapter);
+
+        $logger = $this->getMockBuilder('Zend\Log\Logger')
+            ->setMethods(array('log'))
+            ->getMock();
+
+        $logger
+            ->expects($this->once())
+            ->method('log');
+
+        $listener->setLogger($logger);
+        
         $listener->onResult($event);
 
         $this->assertNotEmpty($event->getError());

@@ -38,6 +38,10 @@ class AuthenticationListener extends AbstractAuthorizationListener
         parent::onResult($event);
 
         if (!$this->isGranted($event)) {
+            if ($this->logger) {
+                $this->logger->info('Failed authentication attempt to push Recurly notification.');
+            }
+
             $response = $event->getResponse();
             $response->setStatusCode(HttpResponse::STATUS_CODE_401);
         }

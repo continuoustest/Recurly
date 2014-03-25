@@ -99,6 +99,17 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->setApplication($application);
 
         $listener = new IpListener(array());
+
+        $logger = $this->getMockBuilder('Zend\Log\Logger')
+            ->setMethods(array('log'))
+            ->getMock();
+
+        $logger
+            ->expects($this->once())
+            ->method('log');
+
+        $listener->setLogger($logger);
+
         $listener->onResult($event);
 
         $this->assertNotEmpty($event->getError());

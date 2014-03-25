@@ -37,6 +37,13 @@ class IpListener extends AbstractAuthorizationListener
         parent::onResult($event);
 
         if (!$this->isGranted($event)) {
+            if ($this->logger) {
+                $this->logger->info(sprintf(
+                    'Unauthorized ip address "%s" attempt to push Recurly notification.',
+                    $this->getClientIpAddress()
+                ));
+            }
+
             $response = $event->getResponse();
             $response->setStatusCode(HttpResponse::STATUS_CODE_403);
         }
@@ -49,14 +56,22 @@ class IpListener extends AbstractAuthorizationListener
     public function isGranted(MvcEvent $event)
     {
         if (!isset($this->isGranted)) {
-            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $clientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            } else {
-                $clientIp = $_SERVER['REMOTE_ADDR'];
-            }
+            $clientIp = $this->getClientIpAddress();
             $this->isGranted = in_array($clientIp, $this->ipAddresses);
         }
 
         return $this->isGranted;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getClientIpAddress()
+    {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+
+        return $_SERVER['REMOTE_ADDR'];
     }
 }
