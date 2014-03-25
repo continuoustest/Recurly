@@ -39,7 +39,7 @@ class IpListener extends AbstractAuthorizationListener
         if (!$this->isGranted($event)) {
             if ($this->logger) {
                 $this->logger->info(sprintf(
-                    'Unauthorized ip address "%s" attempt to push Recurly notification.',
+                    'Unauthorized ip address "%s" attempted to push Recurly notification.',
                     $this->getClientIpAddress()
                 ));
             }

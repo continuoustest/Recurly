@@ -39,7 +39,7 @@ class AuthenticationListener extends AbstractAuthorizationListener
 
         if (!$this->isGranted($event)) {
             if ($this->logger) {
-                $this->logger->info('Failed authentication attempt to push Recurly notification.');
+                $this->logger->info('Failed authentication attempted to push Recurly notification.');
             }
 
             $response = $event->getResponse();
