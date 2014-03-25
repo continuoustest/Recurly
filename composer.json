@@ -3,7 +3,7 @@
     "description": "ZF2 module for using Recurly plateform",
     "type": "library",
     "keywords": [
-        "zf2", "recurly"
+        "zf2", "recurly", "subscription", "billing"
     ],
     "license": "MIT",
     "homepage": "https://github.com/neeckeloo/Recurly",
