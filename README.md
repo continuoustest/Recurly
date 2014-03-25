@@ -20,7 +20,7 @@ If you're using [Composer](http://getcomposer.org/), you can simply add a depend
 
     {
         "require": {
-            "neeckeloo/recurly": "dev-master"
+            "neeckeloo/recurly": "1.1.0"
         }
     }
 
