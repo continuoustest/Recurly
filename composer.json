@@ -1,6 +1,6 @@
 {
     "name": "neeckeloo/recurly",
-    "description": "ZF2 module for using Recurly plateform",
+    "description": "ZF2 module for using Recurly's subscription billing platform",
     "type": "library",
     "keywords": [
         "zf2", "recurly", "subscription", "billing"
