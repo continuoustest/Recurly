@@ -36,7 +36,7 @@ class IpListener extends AbstractAuthorizationListener
     {
         parent::onResult($event);
 
-        if (!$this->isGranted($event)) {
+        if ($event->isError()) {
             if ($this->logger) {
                 $this->logger->info(sprintf(
                     'Unauthorized ip address "%s" attempted to push Recurly notification.',
@@ -55,12 +55,9 @@ class IpListener extends AbstractAuthorizationListener
      */
     public function isGranted(MvcEvent $event)
     {
-        if (!isset($this->isGranted)) {
-            $clientIp = $this->getClientIpAddress();
-            $this->isGranted = in_array($clientIp, $this->ipAddresses);
-        }
-
-        return $this->isGranted;
+        $clientIp = $this->getClientIpAddress();
+        
+        return in_array($clientIp, $this->ipAddresses);
     }
 
     /**

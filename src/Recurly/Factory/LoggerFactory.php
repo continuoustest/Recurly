@@ -24,6 +24,10 @@ class LoggerFactory implements FactoryInterface
                 '`logger` option of Recurly module must be an instance or extend Zend\Log\Logger class.'
             );
         }
+        
+        if (count($logger->getWriters()) == 0) {
+            $logger->addWriter('null');
+        }
 
         return $logger;
     }

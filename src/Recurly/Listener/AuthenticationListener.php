@@ -37,7 +37,7 @@ class AuthenticationListener extends AbstractAuthorizationListener
     {
         parent::onResult($event);
 
-        if (!$this->isGranted($event)) {
+        if ($event->isError()) {
             if ($this->logger) {
                 $this->logger->info('Failed authentication attempted to push Recurly notification.');
             }
@@ -53,11 +53,8 @@ class AuthenticationListener extends AbstractAuthorizationListener
      */
     public function isGranted(MvcEvent $event)
     {
-        if (!isset($this->isGranted)) {
-            $result = $this->authAdapter->authenticate();
-            $this->isGranted = $result->isValid();
-        }
+        $result = $this->authAdapter->authenticate();
 
-        return $this->isGranted;
+        return $result->isValid();
     }
 }

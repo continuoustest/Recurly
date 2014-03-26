@@ -38,6 +38,7 @@ return array(
         'invokables' => array(
             'Recurly\Listener\ErrorListener' => 'Recurly\Listener\ErrorListener',
             'Recurly\Notification\Handler'   => 'Recurly\Notification\Handler',
+            'Zend\Log\Logger'                => 'Zend\Log\Logger',
         ),
         'factories' => array(
             'Recurly\ModuleConfig'                    => 'Recurly\Factory\ModuleConfigFactory',
