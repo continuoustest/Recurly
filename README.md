@@ -13,16 +13,35 @@ Introduction
 
 Recurly module provide a config file to initialize simply [REST API](http://docs.recurly.com/api) client.
 
+Requirements
+------------
+
+* PHP 5.3 or higher
+* [Recurly PHP Library](https://github.com/recurly/recurly-client)
+
 Installation
 ------------
 
-If you're using [Composer](http://getcomposer.org/), you can simply add a dependency on `neeckeloo/recurly` to your project's `composer.json` file.
+NewRelic module only officially supports installation through Composer. For Composer documentation, please refer to
+[getcomposer.org](http://getcomposer.org/).
 
-    {
-        "require": {
-            "neeckeloo/recurly": "1.1.0"
-        }
+You can install the module from command line:
+```sh
+$ php composer.phar require neeckeloo/recurly:1.1.*
+```
+
+Alternatively, you can also add manually the dependency in your `composer.json` file:
+```json
+{
+    "require": {
+        "neeckeloo/recurly": "1.1.*"
     }
+}
+```
+
+Enable the module by adding `Recurly` key to your `application.config.php` file. Customize the module by copy-pasting
+the `recurly.global.php.dist` file to your `config/autoload` folder.
+    
 
 Configuration
 -------------
