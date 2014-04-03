@@ -4,12 +4,14 @@ namespace Recurly;
 
 use Recurly_Client;
 use Recurly_js;
+use Zend\Mvc\MvcEvent;
 
 class Module
 {
-    public function onBootstrap($e)
+    public function onBootstrap(MvcEvent $e)
     {
-        $serviceManager = $e->getApplication()->getServiceManager();
+        $application = $e->getApplication();
+        $serviceManager = $application->getServiceManager();
         $config = $serviceManager->get('Recurly\ModuleConfig');
         
         if (empty($config['subdomain']) || empty($config['api_key'])) {
@@ -22,26 +24,33 @@ class Module
         if (isset($config['private_key'])) {
             Recurly_js::$privateKey = $config['private_key'];
         }
-
-        $target = $e->getTarget();
         
         /* @var $eventManager  \Zend\EventManager\EventManager */
-        $eventManager = $target->getEventManager();
+        $eventManager = $application->getEventManager();
 
         $notificationConfig = $config['notification'];
 
-        if ($notificationConfig['ip_checking']['enabled']) {
-            $ipListener = $target->getServiceManager()->get('Recurly\Listener\IpListener');
+        if ($notificationConfig['security']['ip_checking']['enabled']) {
+            $ipListener = $serviceManager->get('Recurly\Listener\IpListener');
             $eventManager->attach($ipListener);
         }
 
-        if ($notificationConfig['authentication']['enabled']) {
-            $authenticationListener = $target->getServiceManager()->get('Recurly\Listener\AuthenticationListener');
+        if ($notificationConfig['security']['authentication']['enabled']) {
+            $authenticationListener = $serviceManager->get('Recurly\Listener\AuthenticationListener');
             $eventManager->attach($authenticationListener);
         }
 
-        $errorListener = $target->getServiceManager()->get('Recurly\Listener\ErrorListener');
+        $errorListener = $serviceManager->get('Recurly\Listener\ErrorListener');
         $eventManager->attach($errorListener);
+
+        if (!empty($notificationConfig['listeners']) && is_array($notificationConfig['listeners'])) {
+            $notificationHandler = $serviceManager->get('Recurly\Notification\Handler');
+
+            foreach ($notificationConfig['listeners'] as $service) {
+                $listener = $serviceManager->get($service);
+                $notificationHandler->getEventManager()->attach($listener);
+            }
+        }
     }
 
     public function getConfig()
