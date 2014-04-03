@@ -26,8 +26,10 @@ class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager
             ->setService('Recurly\ModuleConfig', array(
                 'notification' => array(
-                    'ip_checking' => array(
-                        'white_list' => array(),
+                    'security' => array(
+                        'ip_checking' => array(
+                            'white_list' => array(),
+                        ),
                     ),
                 ),
             ))

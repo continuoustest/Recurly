@@ -21,13 +21,15 @@ class AuthenticationAdapterFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager = new ServiceManager();
         $serviceManager->setService('Recurly\ModuleConfig', array(
             'notification' => array(
-                'authentication' => array(
-                    'auth_adapter' => array(
-                        'config' => array(
-                            'accept_schemes' => 'basic',
-                            'realm'          => 'MyApp Site',
+                'security' => array(
+                    'authentication' => array(
+                        'auth_adapter' => array(
+                            'config' => array(
+                                'accept_schemes' => 'basic',
+                                'realm'          => 'MyApp Site',
+                            ),
+                            'passwd_file'  => __DIR__ . '/_files/passwd.txt',
                         ),
-                        'passwd_file'  => __DIR__ . '/_files/passwd.txt',
                     ),
                 ),
             ),
