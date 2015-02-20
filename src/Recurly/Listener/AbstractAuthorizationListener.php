@@ -42,4 +42,10 @@ abstract class AbstractAuthorizationListener extends AbstractListenerAggregate
         $application = $event->getApplication();
         $application->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
     }
+
+    /**
+     * @param  MvcEvent $event
+     * @return bool
+     */
+    abstract protected function isGranted(MvcEvent $event);
 }

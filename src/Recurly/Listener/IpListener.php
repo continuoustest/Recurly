@@ -30,8 +30,7 @@ class IpListener extends AbstractAuthorizationListener
     }
 
     /**
-     * @param  MvcEvent $event
-     * @return void
+     * {@inheritDoc}
      */
     public function onResult(MvcEvent $event)
     {
@@ -50,10 +49,9 @@ class IpListener extends AbstractAuthorizationListener
     }
 
     /**
-     * @param  MvcEvent $event
-     * @return bool
+     * {@inheritDoc}
      */
-    public function isGranted(MvcEvent $event)
+    protected function isGranted(MvcEvent $event)
     {
         return false !== $this->whip->getValidIpAddress();
     }

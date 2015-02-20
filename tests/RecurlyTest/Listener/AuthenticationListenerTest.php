@@ -25,47 +25,6 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $listener->attach($eventManager);
     }
 
-    public function ipDataProvider()
-    {
-        return [
-            [true, true],
-            [false, false],
-        ];
-    }
-
-    /**
-     * @dataProvider ipDataProvider
-     */
-    public function testIsGranted($validAuthentication, $isGranted)
-    {
-        $event = new MvcEvent();
-
-        $routeMatch = new RouteMatch([]);
-        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
-        $event->setRouteMatch($routeMatch);
-
-        $request = new HttpRequest();
-        $event->setRequest($request);
-
-        $authenticationResult = $this->getAuthenticationResult();
-
-        $authenticationResult
-            ->expects($this->once())
-            ->method('isValid')
-            ->will($this->returnValue($validAuthentication));
-
-        $authAdapter = $this->getAuthenticationAdapter();
-
-        $authAdapter
-            ->expects($this->once())
-            ->method('authenticate')
-            ->will($this->returnValue($authenticationResult));
-
-        $listener = new AuthenticationListener($authAdapter);
-
-        $this->assertEquals($isGranted, $listener->isGranted($event));
-    }
-
     public function testProperlyFillEventOnAuthorization()
     {
         $event      = new MvcEvent();

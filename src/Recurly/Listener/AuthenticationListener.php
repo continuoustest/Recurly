@@ -30,8 +30,7 @@ class AuthenticationListener extends AbstractAuthorizationListener
     }
 
     /**
-     * @param  MvcEvent $event
-     * @return void
+     * {@inheritDoc}
      */
     public function onResult(MvcEvent $event)
     {
@@ -47,10 +46,9 @@ class AuthenticationListener extends AbstractAuthorizationListener
     }
 
     /**
-     * @param  MvcEvent $event
-     * @return bool
+     * {@inheritDoc}
      */
-    public function isGranted(MvcEvent $event)
+    protected function isGranted(MvcEvent $event)
     {
         $result = $this->authAdapter->authenticate();
 

@@ -25,39 +25,6 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $listener->attach($eventManager);
     }
 
-    public function ipDataProvider()
-    {
-        return [
-            ['127.0.0.1', true],
-            [false, false],
-        ];
-    }
-
-    /**
-     * @dataProvider ipDataProvider
-     */
-    public function testIsGranted($ipAddress, $isGranted)
-    {
-        $whip = $this->getMock('VectorFace\Whip\Whip');
-        $whip
-            ->expects($this->once())
-            ->method('getValidIpAddress')
-            ->will($this->returnValue($ipAddress));
-
-        $event = new MvcEvent();
-
-        $routeMatch = new RouteMatch([]);
-        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
-        $event->setRouteMatch($routeMatch);
-
-        $request = new HttpRequest();
-        $event->setRequest($request);
-
-        $listener = new IpListener($whip);
-
-        $this->assertSame($isGranted, $listener->isGranted($event));
-    }
-
     public function testProperlyFillEventOnAuthorization()
     {
         $whip = $this->getMock('VectorFace\Whip\Whip');
