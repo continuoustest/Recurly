@@ -3,45 +3,14 @@ namespace Recurly\Listener;
 
 use Recurly\Exception;
 use Recurly\Module;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\AbstractListenerAggregate;
 use Zend\Http\Request as HttpRequest;
-use Zend\Log\LoggerInterface;
+use Zend\Log\LoggerAwareTrait;
 use Zend\Mvc\MvcEvent;
 
-abstract class AbstractAuthorizationListener implements ListenerAggregateInterface
+abstract class AbstractAuthorizationListener extends AbstractListenerAggregate
 {
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = [];
-
-    /**
-     * LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @param  LoggerInterface $logger
-     * @return self
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $callback) {
-            if ($events->detach($callback)) {
-                unset($this->listeners[$index]);
-            }
-        }
-    }
+    use LoggerAwareTrait;
 
     /**
      * @param  MvcEvent $event
