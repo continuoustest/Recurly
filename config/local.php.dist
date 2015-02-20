@@ -1,8 +1,8 @@
 <?php
-return array(
-    'recurly' => array(
+return [
+    'recurly' => [
         'subdomain'   => null,
         'api_key'     => null,
         'private_key' => null,
-    ),
-);
+    ],
+];
