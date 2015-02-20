@@ -18,7 +18,7 @@ Requirements
 ------------
 
 * PHP 5.4 or higher
-* [Recurly PHP Library](https://github.com/recurly/recurly-client)
+* [Recurly PHP Library](https://github.com/recurly/recurly-client-php)
 
 Installation
 ------------
