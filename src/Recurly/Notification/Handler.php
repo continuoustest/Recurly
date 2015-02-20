@@ -2,12 +2,13 @@
 namespace Recurly\Notification;
 
 use Recurly_PushNotification;
-use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
 class Handler implements EventManagerAwareInterface
 {
+    use EventManagerAwareTrait;
+
     const EVENT_NEW_ACCOUNT = 'new_account_notification';
     const EVENT_CANCELED_ACCOUNT = 'canceled_account_notification';
     const EVENT_BILLING_INFO_UPDATED = 'billing_info_updated_notification';
@@ -21,32 +22,6 @@ class Handler implements EventManagerAwareInterface
     const EVENT_FAILED_PAYMENT = 'failed_payment_notification';
     const EVENT_SUCCESSFUL_REFUND = 'successful_refund_notification';
     const EVENT_VOID_PAYMENT = 'void_payment_notification';
-
-    /**
-     * @var EventManagerInterface
-     */
-    protected $eventManager;
-
-    /**
-     * @param  EventManagerInterface $eventManager
-     * @return void
-     */
-    public function setEventManager(EventManagerInterface $eventManager)
-    {
-        $this->eventManager = $eventManager;
-    }
-
-    /**
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
-    {
-        if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-    }
 
     /**
      * @param  string $data
