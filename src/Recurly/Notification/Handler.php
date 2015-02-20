@@ -23,7 +23,7 @@ class Handler implements EventManagerAwareInterface
     const EVENT_VOID_PAYMENT = 'void_payment_notification';
 
     /**
-     * @var EventManagerInterface 
+     * @var EventManagerInterface
      */
     protected $eventManager;
 
@@ -56,7 +56,7 @@ class Handler implements EventManagerAwareInterface
     {
         $notification = new Recurly_PushNotification($data);
 
-        $params = array('account' => $notification->account);
+        $params = ['account' => $notification->account];
         if (!empty($notification->subscription)) {
             $params['subscription'] = $notification->subscription;
         }

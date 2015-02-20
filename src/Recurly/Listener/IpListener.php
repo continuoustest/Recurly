@@ -10,7 +10,7 @@ class IpListener extends AbstractAuthorizationListener
     /**
      * List of IPs to blacklist
      */
-    protected $ipAddresses = array();
+    protected $ipAddresses = [];
 
     /**
      * @param array $ipAddresses
@@ -19,13 +19,13 @@ class IpListener extends AbstractAuthorizationListener
     {
         $this->ipAddresses = $ipAddresses;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onResult'), -99);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, [$this, 'onResult'], -99);
     }
 
     /**
@@ -56,7 +56,7 @@ class IpListener extends AbstractAuthorizationListener
     public function isGranted(MvcEvent $event)
     {
         $clientIp = $this->getClientIpAddress();
-        
+
         return in_array($clientIp, $this->ipAddresses);
     }
 

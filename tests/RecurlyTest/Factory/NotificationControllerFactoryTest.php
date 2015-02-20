@@ -20,9 +20,9 @@ class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateService()
     {
         $serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceLocatorInterface')
-            ->setMethods(array('getServiceLocator', 'get', 'has'))
+            ->setMethods(['getServiceLocator', 'get', 'has'])
             ->getMock();
-        
+
         $serviceManager = new ServiceManager();
         $serviceManager->setService('Recurly\Notification\Handler', new NotificationHandler());
 

@@ -7,7 +7,7 @@ use Zend\EventManager\EventManager;
 class HandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var NotificationHandler 
+     * @var NotificationHandler
      */
     protected $handler;
 
@@ -38,7 +38,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         </new_account_notification>';
 
         $eventManager = $this->getMockBuilder('Zend\EventManager\EventManager')
-            ->setMethods(array('trigger'))
+            ->setMethods(['trigger'])
             ->getMock();
 
         $eventManager

@@ -19,9 +19,9 @@ class ModuleConfigFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateService()
     {
         $serviceManager = new ServiceManager();
-        $serviceManager->setService('Config', array(
-            'recurly' => array(),
-        ));
+        $serviceManager->setService('Config', [
+            'recurly' => [],
+        ]);
 
         $config = $this->factory->createService($serviceManager);
         $this->assertInternalType('array', $config);
@@ -33,7 +33,7 @@ class ModuleConfigFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateServiceWithoutRecurlyConfigKey()
     {
         $serviceManager = new ServiceManager();
-        $serviceManager->setService('Config', array());
+        $serviceManager->setService('Config', []);
 
         $config = $this->factory->createService($serviceManager);
         $this->assertInternalType('array', $config);

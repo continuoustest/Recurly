@@ -24,11 +24,11 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $serviceManager = new ServiceManager();
         $serviceManager
-            ->setService('Recurly\ModuleConfig', array(
-                'notification' => array(
+            ->setService('Recurly\ModuleConfig', [
+                'notification' => [
                     'logger' => 'Zend\Log\Logger',
-                ),
-            ))
+                ],
+            ])
             ->setService('Zend\Log\Logger', $logger);
 
         $logger = $this->factory->createService($serviceManager);
@@ -42,11 +42,11 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $serviceManager = new ServiceManager();
         $serviceManager
-            ->setService('Recurly\ModuleConfig', array(
-                'notification' => array(
+            ->setService('Recurly\ModuleConfig', [
+                'notification' => [
                     'logger' => 'Foo\Log\Logger',
-                ),
-            ))
+                ],
+            ])
             ->setService('Foo\Log\Logger', new \stdClass());
 
         $logger = $this->factory->createService($serviceManager);

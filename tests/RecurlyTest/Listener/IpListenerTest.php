@@ -11,7 +11,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAttachEvent()
     {
-        $listener = new IpListener(array());
+        $listener = new IpListener([]);
 
         $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
         $eventManager->expects($this->once())
@@ -23,10 +23,10 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 
     public function ipDataProvider()
     {
-        return array(
-            array(array('127.0.0.1'), '127.0.0.1', true),
-            array(array('127.0.0.1'), '127.0.0.2', false),
-        );
+        return [
+            [['127.0.0.1'], '127.0.0.1', true],
+            [['127.0.0.1'], '127.0.0.2', false],
+        ];
     }
 
     /**
@@ -37,8 +37,8 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $_SERVER['REMOTE_ADDR'] = $clientIp;
 
         $event = new MvcEvent();
-        
-        $routeMatch = new RouteMatch(array());
+
+        $routeMatch = new RouteMatch([]);
         $routeMatch->setMatchedRouteName('recurly/notification');
         $event->setRouteMatch($routeMatch);
 
@@ -57,7 +57,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $event      = new MvcEvent();
         $request    = new HttpRequest();
         $response   = new HttpResponse();
-        $routeMatch = new RouteMatch(array());
+        $routeMatch = new RouteMatch([]);
 
         $routeMatch->setMatchedRouteName('recurly/notification');
         $event
@@ -65,7 +65,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->setResponse($response)
             ->setRouteMatch($routeMatch);
 
-        $listener = new IpListener(array('127.0.0.1'));
+        $listener = new IpListener(['127.0.0.1']);
         $listener->onResult($event);
 
         $this->assertEmpty($event->getError());
@@ -79,7 +79,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $event      = new MvcEvent();
         $request    = new HttpRequest();
         $response   = new HttpResponse();
-        $routeMatch = new RouteMatch(array());
+        $routeMatch = new RouteMatch([]);
 
         $application  = $this->getMockBuilder('Zend\Mvc\Application')
             ->disableOriginalConstructor()
@@ -98,10 +98,10 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->setRouteMatch($routeMatch)
             ->setApplication($application);
 
-        $listener = new IpListener(array());
+        $listener = new IpListener([]);
 
         $logger = $this->getMockBuilder('Zend\Log\Logger')
-            ->setMethods(array('log'))
+            ->setMethods(['log'])
             ->getMock();
 
         $logger

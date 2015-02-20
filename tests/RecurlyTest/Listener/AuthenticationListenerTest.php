@@ -27,10 +27,10 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
     public function ipDataProvider()
     {
-        return array(
-            array(true, true),
-            array(false, false),
-        );
+        return [
+            [true, true],
+            [false, false],
+        ];
     }
 
     /**
@@ -40,7 +40,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new MvcEvent();
 
-        $routeMatch = new RouteMatch(array());
+        $routeMatch = new RouteMatch([]);
         $routeMatch->setMatchedRouteName('recurly/notification');
         $event->setRouteMatch($routeMatch);
 
@@ -75,7 +75,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $event      = new MvcEvent();
         $request    = new HttpRequest();
         $response   = new HttpResponse();
-        $routeMatch = new RouteMatch(array());
+        $routeMatch = new RouteMatch([]);
 
         $routeMatch->setMatchedRouteName('recurly/notification');
         $event
@@ -114,7 +114,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $event      = new MvcEvent();
         $request    = new HttpRequest();
         $response   = new HttpResponse();
-        $routeMatch = new RouteMatch(array());
+        $routeMatch = new RouteMatch([]);
 
         $application  = $this->getMockBuilder('Zend\Mvc\Application')
             ->disableOriginalConstructor()
@@ -155,7 +155,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new AuthenticationListener($authAdapter);
 
         $logger = $this->getMockBuilder('Zend\Log\Logger')
-            ->setMethods(array('log'))
+            ->setMethods(['log'])
             ->getMock();
 
         $logger
@@ -163,7 +163,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('log');
 
         $listener->setLogger($logger);
-        
+
         $listener->onResult($event);
 
         $this->assertNotEmpty($event->getError());
