@@ -8,9 +8,12 @@ return [
                 'ip_checking' => [
                     'enabled' => true,
                     'white_list' => [
-                        '75.98.92.96', '75.98.92.97', '75.98.92.98', '75.98.92.99', '75.98.92.100', '75.98.92.101',
-                        '75.98.92.102', '75.98.92.103', '75.98.92.104', '75.98.92.105', '75.98.92.106', '75.98.92.107',
-                        '75.98.92.108', '75.98.92.109', '75.98.92.110', '75.98.92.111',
+                        '74.201.212.175',
+                        '64.74.141.175',
+                        '75.98.92.102',
+                        '74.201.212.0/24',
+                        '64.74.141.0/24',
+                        '75.98.92.96/28',
                     ],
                 ],
 
@@ -50,6 +53,7 @@ return [
             'Recurly\Logger'                          => 'Recurly\Factory\LoggerFactory',
             'Recurly\Listener\AuthenticationListener' => 'Recurly\Factory\AuthenticationListenerFactory',
             'Recurly\Listener\IpListener'             => 'Recurly\Factory\IpListenerFactory',
+            'Recurly\Whip'                            => 'Recurly\Factory\WhipFactory',
         ],
     ],
 

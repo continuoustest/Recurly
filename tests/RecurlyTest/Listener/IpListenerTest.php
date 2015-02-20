@@ -12,7 +12,9 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAttachEvent()
     {
-        $listener = new IpListener([]);
+        $whip = $this->getMock('VectorFace\Whip\Whip');
+
+        $listener = new IpListener($whip);
 
         $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
         $eventManager
@@ -26,17 +28,21 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
     public function ipDataProvider()
     {
         return [
-            [['127.0.0.1'], '127.0.0.1', true],
-            [['127.0.0.1'], '127.0.0.2', false],
+            ['127.0.0.1', true],
+            [false, false],
         ];
     }
 
     /**
      * @dataProvider ipDataProvider
      */
-    public function testIsGranted(array $ipAddresses, $clientIp, $isGranted)
+    public function testIsGranted($ipAddress, $isGranted)
     {
-        $_SERVER['REMOTE_ADDR'] = $clientIp;
+        $whip = $this->getMock('VectorFace\Whip\Whip');
+        $whip
+            ->expects($this->once())
+            ->method('getValidIpAddress')
+            ->will($this->returnValue($ipAddress));
 
         $event = new MvcEvent();
 
@@ -47,14 +53,18 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $request = new HttpRequest();
         $event->setRequest($request);
 
-        $listener = new IpListener($ipAddresses);
+        $listener = new IpListener($whip);
 
-        $this->assertEquals($isGranted, $listener->isGranted($event));
+        $this->assertSame($isGranted, $listener->isGranted($event));
     }
 
     public function testProperlyFillEventOnAuthorization()
     {
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $whip = $this->getMock('VectorFace\Whip\Whip');
+        $whip
+            ->expects($this->once())
+            ->method('getValidIpAddress')
+            ->will($this->returnValue(true));
 
         $event      = new MvcEvent();
         $request    = new HttpRequest();
@@ -67,7 +77,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->setResponse($response)
             ->setRouteMatch($routeMatch);
 
-        $listener = new IpListener(['127.0.0.1']);
+        $listener = new IpListener($whip);
         $listener->onResult($event);
 
         $this->assertEmpty($event->getError());
@@ -76,7 +86,11 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testProperlySetUnauthorizedAndTriggerEventOnUnauthorization()
     {
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $whip = $this->getMock('VectorFace\Whip\Whip');
+        $whip
+            ->expects($this->once())
+            ->method('getValidIpAddress')
+            ->will($this->returnValue(false));
 
         $event      = new MvcEvent();
         $request    = new HttpRequest();
@@ -100,7 +114,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->setRouteMatch($routeMatch)
             ->setApplication($application);
 
-        $listener = new IpListener([]);
+        $listener = new IpListener($whip);
 
         $logger = $this->getMock('Zend\Log\LoggerInterface');
 

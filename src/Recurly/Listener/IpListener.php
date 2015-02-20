@@ -1,6 +1,7 @@
 <?php
 namespace Recurly\Listener;
 
+use VectorFace\Whip\Whip;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
@@ -8,16 +9,16 @@ use Zend\Mvc\MvcEvent;
 class IpListener extends AbstractAuthorizationListener
 {
     /**
-     * List of IPs to blacklist
+     * @var Whip
      */
-    protected $ipAddresses = [];
+    protected $whip;
 
     /**
-     * @param array $ipAddresses
+     * @param Whip $whip
      */
-    public function __construct(array $ipAddresses)
+    public function __construct(Whip $whip)
     {
-        $this->ipAddresses = $ipAddresses;
+        $this->whip = $whip;
     }
 
     /**
@@ -40,7 +41,7 @@ class IpListener extends AbstractAuthorizationListener
             if ($this->logger) {
                 $this->logger->info(sprintf(
                     'Unauthorized ip address "%s" attempted to push Recurly notification.',
-                    $this->getClientIpAddress()
+                    $this->whip->getIpAddress()
                 ));
             }
 
@@ -55,20 +56,6 @@ class IpListener extends AbstractAuthorizationListener
      */
     public function isGranted(MvcEvent $event)
     {
-        $clientIp = $this->getClientIpAddress();
-
-        return in_array($clientIp, $this->ipAddresses);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getClientIpAddress()
-    {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-
-        return $_SERVER['REMOTE_ADDR'];
+        return false !== $this->whip->getValidIpAddress();
     }
 }

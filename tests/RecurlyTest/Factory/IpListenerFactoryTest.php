@@ -8,19 +8,12 @@ class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateService()
     {
+        $whip   = $this->getMock('VectorFace\Whip\Whip');
         $logger = $this->getMock('Zend\Log\LoggerInterface');
 
         $serviceManager = new ServiceManager();
         $serviceManager
-            ->setService('Recurly\ModuleConfig', [
-                'notification' => [
-                    'security' => [
-                        'ip_checking' => [
-                            'white_list' => [],
-                        ],
-                    ],
-                ],
-            ])
+            ->setService('Recurly\Whip',   $whip)
             ->setService('Recurly\Logger', $logger);
 
         $factory = new IpListenerFactory();
