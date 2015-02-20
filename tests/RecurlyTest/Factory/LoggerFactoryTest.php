@@ -6,16 +6,6 @@ use Zend\ServiceManager\ServiceManager;
 
 class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var LoggerFactory
-     */
-    protected $factory;
-
-    public function setUp()
-    {
-        $this->factory = new LoggerFactory();
-    }
-
     public function testCreateService()
     {
         $logger = $this->getMockBuilder('Zend\Log\Logger')
@@ -31,7 +21,9 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
             ])
             ->setService('Zend\Log\Logger', $logger);
 
-        $logger = $this->factory->createService($serviceManager);
+        $factory = new LoggerFactory();
+
+        $logger = $factory->createService($serviceManager);
         $this->assertInstanceOf('Zend\Log\Logger', $logger);
     }
 
@@ -49,7 +41,8 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
             ])
             ->setService('Foo\Log\Logger', new \stdClass());
 
-        $logger = $this->factory->createService($serviceManager);
-        $this->assertInstanceOf('Zend\Log\Logger', $logger);
+        $factory = new LoggerFactory();
+
+        $factory->createService($serviceManager);
     }
 }

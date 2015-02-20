@@ -2,26 +2,23 @@
 namespace RecurlyTest\Notification;
 
 use Recurly\Notification\Handler as NotificationHandler;
-use Zend\EventManager\EventManager;
 
 class HandlerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var NotificationHandler
-     */
-    protected $handler;
-
-    public function setUp()
-    {
-        $this->handler = new NotificationHandler();
-    }
-
     public function testSetGetEventManager()
     {
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->handler->getEventManager());
+        $handler = new NotificationHandler();
 
-        $this->handler->setEventManager(new EventManager());
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $this->handler->getEventManager());
+        $this->assertInstanceOf(
+            'Zend\EventManager\EventManagerInterface',
+            $handler->getEventManager()
+        );
+
+        $handler->setEventManager($this->getEventManager());
+        $this->assertInstanceOf(
+            'Zend\EventManager\EventManagerInterface',
+            $handler->getEventManager()
+        );
     }
 
     public function testNotificationHandler()
@@ -37,15 +34,20 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             </account>
         </new_account_notification>';
 
-        $eventManager = $this->getMockBuilder('Zend\EventManager\EventManager')
-            ->setMethods(['trigger'])
-            ->getMock();
+        $handler = new NotificationHandler();
 
+        $eventManager = $this->getEventManager();
         $eventManager
             ->expects($this->once())
-            ->method('trigger');
+            ->method('trigger')
+            ->with('new_account_notification', $this->anything());
+        $handler->setEventManager($eventManager);
 
-        $this->handler->setEventManager($eventManager);
-        $this->handler->handle($xml);
+        $handler->handle($xml);
+    }
+
+    private function getEventManager()
+    {
+        return $this->getMock('Zend\EventManager\EventManagerInterface');
     }
 }

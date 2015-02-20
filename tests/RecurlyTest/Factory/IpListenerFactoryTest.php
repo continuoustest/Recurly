@@ -6,21 +6,9 @@ use Zend\ServiceManager\ServiceManager;
 
 class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var IpListenerFactory
-     */
-    protected $factory;
-
-    public function setUp()
-    {
-        $this->factory = new IpListenerFactory();
-    }
-
     public function testCreateService()
     {
-        $logger = $this->getMockBuilder('Zend\Log\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $logger = $this->getMock('Zend\Log\LoggerInterface');
 
         $serviceManager = new ServiceManager();
         $serviceManager
@@ -35,7 +23,9 @@ class IpListenerFactoryTest extends \PHPUnit_Framework_TestCase
             ])
             ->setService('Recurly\Logger', $logger);
 
-        $listener = $this->factory->createService($serviceManager);
+        $factory = new IpListenerFactory();
+
+        $listener = $factory->createService($serviceManager);
         $this->assertInstanceOf('Recurly\Listener\IpListener', $listener);
     }
 }

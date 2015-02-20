@@ -2,6 +2,7 @@
 namespace RecurlyTest\Listener;
 
 use Recurly\Listener\AuthenticationListener;
+use Recurly\Module;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
@@ -11,16 +12,15 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAttachEvent()
     {
-        $authAdapter = $this->getMockBuilder('Zend\Authentication\Adapter\Http')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $authAdapter = $this->getAuthenticationAdapter();
 
         $listener = new AuthenticationListener($authAdapter);
 
         $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
-        $eventManager->expects($this->once())
-                     ->method('attach')
-                     ->with(MvcEvent::EVENT_ROUTE);
+        $eventManager
+            ->expects($this->once())
+            ->method('attach')
+            ->with(MvcEvent::EVENT_ROUTE);
 
         $listener->attach($eventManager);
     }
@@ -41,24 +41,20 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $event = new MvcEvent();
 
         $routeMatch = new RouteMatch([]);
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event->setRouteMatch($routeMatch);
 
         $request = new HttpRequest();
         $event->setRequest($request);
 
-        $authAdapter = $this->getMockBuilder('Zend\Authentication\Adapter\Http')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $authenticationResult = $this->getMockBuilder('Zend\Authentication\Result')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $authenticationResult = $this->getAuthenticationResult();
 
         $authenticationResult
             ->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue($validAuthentication));
+
+        $authAdapter = $this->getAuthenticationAdapter();
 
         $authAdapter
             ->expects($this->once())
@@ -77,25 +73,20 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $response   = new HttpResponse();
         $routeMatch = new RouteMatch([]);
 
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event
             ->setRequest($request)
             ->setResponse($response)
             ->setRouteMatch($routeMatch);
 
-
-        $authAdapter = $this->getMockBuilder('Zend\Authentication\Adapter\Http')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $authenticationResult = $this->getMockBuilder('Zend\Authentication\Result')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $authenticationResult = $this->getAuthenticationResult();
 
         $authenticationResult
             ->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $authAdapter = $this->getAuthenticationAdapter();
 
         $authAdapter
             ->expects($this->once())
@@ -126,26 +117,21 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEventManager')
             ->will($this->returnValue($eventManager));
 
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event
             ->setRequest($request)
             ->setResponse($response)
             ->setRouteMatch($routeMatch)
             ->setApplication($application);
 
-
-        $authAdapter = $this->getMockBuilder('Zend\Authentication\Adapter\Http')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $authenticationResult = $this->getMockBuilder('Zend\Authentication\Result')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $authenticationResult = $this->getAuthenticationResult();
 
         $authenticationResult
             ->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $authAdapter = $this->getAuthenticationAdapter();
 
         $authAdapter
             ->expects($this->once())
@@ -154,13 +140,11 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $listener = new AuthenticationListener($authAdapter);
 
-        $logger = $this->getMockBuilder('Zend\Log\Logger')
-            ->setMethods(['log'])
-            ->getMock();
+        $logger = $this->getMock('Zend\Log\LoggerInterface');
 
         $logger
             ->expects($this->once())
-            ->method('log');
+            ->method('info');
 
         $listener->setLogger($logger);
 
@@ -170,5 +154,19 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($event->getParam('exception'));
 
         $this->assertEquals(HttpResponse::STATUS_CODE_401, $response->getStatusCode());
+    }
+
+    private function getAuthenticationAdapter()
+    {
+        return $this->getMockBuilder('Zend\Authentication\Adapter\Http')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    private function getAuthenticationResult()
+    {
+        return $this->getMockBuilder('Zend\Authentication\Result')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

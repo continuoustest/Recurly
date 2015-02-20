@@ -2,36 +2,29 @@
 namespace RecurlyTest\Factory;
 
 use Recurly\Factory\NotificationControllerFactory;
-use Recurly\Notification\Handler as NotificationHandler;
-use Zend\ServiceManager\ServiceManager;
 
 class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var NotificationControllerFactory
-     */
-    protected $factory;
-
-    public function setUp()
-    {
-        $this->factory = new NotificationControllerFactory();
-    }
-
     public function testCreateService()
     {
-        $serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceLocatorInterface')
-            ->setMethods(['getServiceLocator', 'get', 'has'])
-            ->getMock();
+        $notificationHandler = $this->getMock('Recurly\Notification\Handler');
 
-        $serviceManager = new ServiceManager();
-        $serviceManager->setService('Recurly\Notification\Handler', new NotificationHandler());
+        $serviceManager = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $serviceManager
+            ->expects($this->once())
+            ->method('get')
+            ->with('Recurly\Notification\Handler')
+            ->will($this->returnValue($notificationHandler));
 
-        $serviceLocator
+        $controllerPluginManager = $this->getMock('Zend\ServiceManager\AbstractPluginManager');
+        $controllerPluginManager
             ->expects($this->once())
             ->method('getServiceLocator')
             ->will($this->returnValue($serviceManager));
 
-        $controller = $this->factory->createService($serviceLocator);
+        $factory = new NotificationControllerFactory();
+
+        $controller = $factory->createService($controllerPluginManager);
         $this->assertInstanceOf('Recurly\Controller\NotificationController', $controller);
     }
 }

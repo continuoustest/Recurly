@@ -2,6 +2,7 @@
 namespace RecurlyTest\Listener;
 
 use Recurly\Listener\IpListener;
+use Recurly\Module;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
@@ -14,9 +15,10 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new IpListener([]);
 
         $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
-        $eventManager->expects($this->once())
-                     ->method('attach')
-                     ->with(MvcEvent::EVENT_ROUTE);
+        $eventManager
+            ->expects($this->once())
+            ->method('attach')
+            ->with(MvcEvent::EVENT_ROUTE);
 
         $listener->attach($eventManager);
     }
@@ -39,7 +41,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $event = new MvcEvent();
 
         $routeMatch = new RouteMatch([]);
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event->setRouteMatch($routeMatch);
 
         $request = new HttpRequest();
@@ -59,7 +61,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
         $response   = new HttpResponse();
         $routeMatch = new RouteMatch([]);
 
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event
             ->setRequest($request)
             ->setResponse($response)
@@ -91,7 +93,7 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEventManager')
             ->will($this->returnValue($eventManager));
 
-        $routeMatch->setMatchedRouteName('recurly/notification');
+        $routeMatch->setMatchedRouteName(Module::RECURLY_NOTIFICATION_ROUTE);
         $event
             ->setRequest($request)
             ->setResponse($response)
@@ -100,13 +102,11 @@ class IpListenerTest extends \PHPUnit_Framework_TestCase
 
         $listener = new IpListener([]);
 
-        $logger = $this->getMockBuilder('Zend\Log\Logger')
-            ->setMethods(['log'])
-            ->getMock();
+        $logger = $this->getMock('Zend\Log\LoggerInterface');
 
         $logger
             ->expects($this->once())
-            ->method('log');
+            ->method('info');
 
         $listener->setLogger($logger);
 

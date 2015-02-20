@@ -2,10 +2,11 @@
 namespace Recurly\Listener;
 
 use Recurly\Exception;
+use Recurly\Module;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Http\Request as HttpRequest;
-use Zend\Log\Logger;
+use Zend\Log\LoggerInterface;
 use Zend\Mvc\MvcEvent;
 
 abstract class AbstractAuthorizationListener implements ListenerAggregateInterface
@@ -14,22 +15,22 @@ abstract class AbstractAuthorizationListener implements ListenerAggregateInterfa
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = [];
-    
+
     /**
-     * Logger
+     * LoggerInterface
      */
     protected $logger;
-    
+
     /**
-     * @param  Logger $logger
+     * @param  LoggerInterface $logger
      * @return self
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
         return $this;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -54,9 +55,9 @@ abstract class AbstractAuthorizationListener implements ListenerAggregateInterfa
             return;
         }
 
-        $routeMatch = $event->getRouteMatch();        
+        $routeMatch = $event->getRouteMatch();
         $matchedRouteName = $routeMatch->getMatchedRouteName();
-        if ($matchedRouteName != 'recurly/notification') {
+        if ($matchedRouteName != Module::RECURLY_NOTIFICATION_ROUTE) {
             return;
         }
 

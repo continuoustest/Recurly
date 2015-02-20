@@ -1,5 +1,4 @@
 <?php
-
 namespace Recurly;
 
 use Recurly_Client;
@@ -8,12 +7,14 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
+    const RECURLY_NOTIFICATION_ROUTE = 'recurly/notification';
+
     public function onBootstrap(MvcEvent $e)
     {
         $application = $e->getApplication();
         $serviceManager = $application->getServiceManager();
         $config = $serviceManager->get('Recurly\ModuleConfig');
-        
+
         if (empty($config['subdomain']) || empty($config['api_key'])) {
             return;
         }
@@ -24,7 +25,7 @@ class Module
         if (isset($config['private_key'])) {
             Recurly_js::$privateKey = $config['private_key'];
         }
-        
+
         /* @var $eventManager  \Zend\EventManager\EventManager */
         $eventManager = $application->getEventManager();
 

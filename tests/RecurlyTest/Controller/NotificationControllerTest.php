@@ -6,57 +6,38 @@ use Zend\Http\Response as HttpResponse;
 
 class NotificationControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var NotificationController
-     */
-    protected $controller;
-
-    /**
-     * @var \Recurly\Notification\Handler
-     */
-    protected $handler;
-
-    public function setUp()
-    {
-        $this->controller = new NotificationController();
-
-        $this->handler = $this->getMockBuilder('Recurly\Notification\Handler')
-            ->getMock();
-        $this->controller->setNotificationHandler($this->handler);
-    }
-
     public function testIndexActionWithRequestContent()
     {
-        $this->handler
+        $requestContent = 'foo';
+
+        $controller = new NotificationController();
+
+        $handler = $this->getMock('Recurly\Notification\Handler');
+        $handler
             ->expects($this->once())
-            ->method('handle');
+            ->method('handle')
+            ->with($requestContent);
+        $controller->setNotificationHandler($handler);
 
-        $xml = '<new_account_notification>
-            <account>
-                <account_code>1</account_code>
-                <username nil="true"></username>
-                <email>verena@example.com</email>
-                <first_name>Verena</first_name>
-                <last_name>Example</last_name>
-                <company_name nil="true"></company_name>
-            </account>
-        </new_account_notification>';
+        $request = $controller->getRequest();
+        $request->setContent($requestContent);
 
-        $request = $this->controller->getRequest();
-        $request->setContent('$xml');
-
-        $response = $this->controller->pushAction();
+        $response = $controller->pushAction();
 
         $this->assertEquals(HttpResponse::STATUS_CODE_200, $response->getStatusCode());
     }
 
     public function testIndexActionWithEmptyRequestContent()
     {
-        $this->handler
+        $controller = new NotificationController();
+
+        $handler = $this->getMock('Recurly\Notification\Handler');
+        $handler
             ->expects($this->never())
             ->method('handle');
+        $controller->setNotificationHandler($handler);
 
-        $response = $this->controller->pushAction();
+        $response = $controller->pushAction();
 
         $this->assertEquals(HttpResponse::STATUS_CODE_202, $response->getStatusCode());
     }

@@ -6,16 +6,6 @@ use Zend\ServiceManager\ServiceManager;
 
 class AuthenticationAdapterFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var AuthenticationAdapterFactory
-     */
-    protected $factory;
-
-    public function setUp()
-    {
-        $this->factory = new AuthenticationAdapterFactory();
-    }
-
     public function testCreateService()
     {
         $serviceManager = new ServiceManager();
@@ -35,7 +25,9 @@ class AuthenticationAdapterFactoryTest extends \PHPUnit_Framework_TestCase
             ],
         ]);
 
-        $adapter = $this->factory->createService($serviceManager);
+        $factory = new AuthenticationAdapterFactory();
+
+        $adapter = $factory->createService($serviceManager);
         $this->assertInstanceOf('Zend\Authentication\Adapter\Http', $adapter);
     }
 }

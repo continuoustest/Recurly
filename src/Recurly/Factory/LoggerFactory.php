@@ -15,7 +15,7 @@ class LoggerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Recurly\ModuleConfig');
-        
+
         /* @var $logger Logger */
         $logger = $serviceLocator->get($config['notification']['logger']);
 
@@ -24,7 +24,7 @@ class LoggerFactory implements FactoryInterface
                 '`logger` option of Recurly module must be an instance or extend Zend\Log\Logger class.'
             );
         }
-        
+
         if (count($logger->getWriters()) == 0) {
             $logger->addWriter('null');
         }
