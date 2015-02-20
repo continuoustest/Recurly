@@ -19,13 +19,11 @@ abstract class AbstractAuthorizationListener extends AbstractListenerAggregate
     public function onResult(MvcEvent $event)
     {
         $request = $event->getRequest();
-
         if (!$request instanceof HttpRequest) {
             return;
         }
 
-        $routeMatch = $event->getRouteMatch();
-        $matchedRouteName = $routeMatch->getMatchedRouteName();
+        $matchedRouteName = $event->getRouteMatch()->getMatchedRouteName();
         if ($matchedRouteName != Module::RECURLY_NOTIFICATION_ROUTE) {
             return;
         }
@@ -41,9 +39,7 @@ abstract class AbstractAuthorizationListener extends AbstractListenerAggregate
 
         $event->stopPropagation(true);
 
-        $application  = $event->getApplication();
-        $eventManager = $application->getEventManager();
-
-        $eventManager->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
+        $application = $event->getApplication();
+        $application->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
     }
 }

@@ -45,8 +45,7 @@ class IpListener extends AbstractAuthorizationListener
                 ));
             }
 
-            $response = $event->getResponse();
-            $response->setStatusCode(HttpResponse::STATUS_CODE_403);
+            $event->getResponse()->setStatusCode(HttpResponse::STATUS_CODE_403);
         }
     }
 
