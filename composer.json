@@ -15,12 +15,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "recurly/recurly-client": "~2.4"
+        "recurly/recurly-client": "~2.4",
+        "vectorface/whip": "~0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",
         "satooshi/php-coveralls": "dev-master",
-        "vectorface/whip": "~0.2",
         "zendframework/zend-authentication": "~2.3",
         "zendframework/zend-http": "~2.3",
         "zendframework/zend-log": "~2.3",
